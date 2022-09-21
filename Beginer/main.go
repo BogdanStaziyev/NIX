@@ -12,7 +12,7 @@ func main() {
 	var num int
 	j.JsonPlaceholder()
 	time.Sleep(2 * time.Second)
-	fmt.Println("Enter number from one to 100")
+	fmt.Println("Enter number from one to 100 too demonstrate goroutine power")
 	if _, err := fmt.Scanln(&num); err != nil {
 		log.Fatal(err)
 	}
