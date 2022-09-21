@@ -1,4 +1,4 @@
-package main
+package beginer
 
 import (
 	"encoding/json"
@@ -8,23 +8,26 @@ import (
 	"os"
 )
 
-type post struct {
+type Post struct {
 	UserId int    `json:"userId,omitempty"`
 	Id     int    `json:"id,omitempty"`
 	Title  string `json:"title,omitempty"`
 	Body   string `json:"body,omitempty"`
 }
 
-func main() {
-	var jsonRes *[]post
+func JsonPlaceholder() {
+	var jsonRes *[]Post
+
 	res, err := http.Get("https://jsonplaceholder.typicode.com/posts/")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer res.Body.Close()
+
 	if err = json.NewDecoder(res.Body).Decode(&jsonRes); err != nil {
 		log.Println(err)
 	}
+
 	out, err := json.MarshalIndent(jsonRes, "", " ")
 	if err != nil {
 		log.Println(err)
