@@ -2,7 +2,6 @@ package beginer
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -15,7 +14,7 @@ type Post struct {
 	Body   string `json:"body,omitempty"`
 }
 
-func JsonPlaceholder() {
+func JsonPlaceholder() []byte {
 	var jsonRes *[]Post
 
 	res, err := http.Get("https://jsonplaceholder.typicode.com/posts/")
@@ -33,5 +32,5 @@ func JsonPlaceholder() {
 		log.Println(err)
 		os.Exit(1)
 	}
-	fmt.Println(string(out))
+	return out
 }

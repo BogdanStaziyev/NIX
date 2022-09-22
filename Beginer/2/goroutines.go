@@ -17,14 +17,15 @@ func GoRoutines(num int) {
 	for i := 1; i <= num; i++ {
 		count := i
 		go func() {
-			coll(count)
+			b := ConvJsonToByte(count)
+			fmt.Println(string(b))
 			defer wg.Done()
 		}()
 	}
 	wg.Wait()
 }
 
-func coll(i int) {
+func ConvJsonToByte(i int) []byte {
 	var jsonRes *beginer.Post
 	url := fmt.Sprintf("https://jsonplaceholder.typicode.com/posts/%d", i)
 	res, err := http.Get(url)
@@ -42,5 +43,5 @@ func coll(i int) {
 		log.Println(err)
 		os.Exit(1)
 	}
-	fmt.Println(string(out))
+	return out
 }
