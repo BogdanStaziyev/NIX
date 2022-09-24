@@ -1,4 +1,4 @@
-package beginer
+package file
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ func CreateFileNix(num int) {
 	for i := 1; i <= num; i++ {
 		str := fmt.Sprintf("./storage/posts/")
 		adr := fmt.Sprintf(str+"%d.txt", i)
-		res := beginer.ConvJsonToByte(i)
+		res := goroutines.ConvJsonToByte(i)
 		if err := os.MkdirAll(str, 0777); err != nil {
 			fmt.Println("MakeDir failed:", err)
 			log.Fatal(err)

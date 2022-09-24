@@ -1,4 +1,4 @@
-package beginer
+package goroutines
 
 import (
 	"encoding/json"

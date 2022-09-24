@@ -1,4 +1,4 @@
-package beginer
+package placeholder
 
 import (
 	"encoding/json"
