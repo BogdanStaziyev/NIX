@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	beginer "nix_practice/Beginer/1"
+	"nix_practice/Beginer/domain"
 	"os"
 	"sync"
 )
@@ -26,7 +26,7 @@ func GoRoutines(num int) {
 }
 
 func ConvJsonToByte(i int) []byte {
-	var jsonRes *beginer.Post
+	var jsonRes *domain.Post
 	url := fmt.Sprintf("https://jsonplaceholder.typicode.com/posts/%d", i)
 	res, err := http.Get(url)
 	if err != nil {

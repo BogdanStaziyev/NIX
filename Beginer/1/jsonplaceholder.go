@@ -4,18 +4,12 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"nix_practice/Beginer/domain"
 	"os"
 )
 
-type Post struct {
-	UserId int    `json:"userId,omitempty"`
-	Id     int    `json:"id,omitempty"`
-	Title  string `json:"title,omitempty"`
-	Body   string `json:"body,omitempty"`
-}
-
 func JsonPlaceholder() []byte {
-	var jsonRes *[]Post
+	var jsonRes *[]domain.Post
 
 	res, err := http.Get("https://jsonplaceholder.typicode.com/posts/")
 	if err != nil {
