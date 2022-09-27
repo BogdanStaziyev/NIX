@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"nix_practice/Beginer/domain"
 	"os"
+	"time"
 )
 
 func WorkWithDb(i int) {
@@ -30,12 +31,12 @@ func writeToDbPosts(i int, db *sql.DB) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	for _, val := range posts {
-		writeToDbComments(val.Id, db)
-		_, err = db.Query("INSERT INTO posts (user_id, id, title, body) VALUES (?,?,?,?)", val.UserId, val.Id, val.Title, val.Body)
+	for g := 0; g <= len(posts)-1; g++ {
+		_, err = db.Query("INSERT INTO posts (user_id, id, title, body) VALUES (?,?,?,?)", posts[g].UserId, posts[g].Id, posts[g].Title, posts[g].Body)
 		if err != nil {
 			log.Println(err)
 		}
+		writeToDbComments(posts[g].Id, db)
 	}
 }
 
@@ -67,8 +68,8 @@ func writeToDbComments(i int, db *sql.DB) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	for _, val := range comments {
-		_, err = db.Query("INSERT INTO comments (post_id, id, name, email, body) VALUES (?,?,?,?,?)", val.PostId, val.Id, val.Name, val.Email, val.Body)
+	for val := 0; val < len(comments); val++ {
+		_, err = db.Query("INSERT INTO comments (post_id, id, name, email, body, time) VALUES (?,?,?,?,?,?)", comments[val].PostId, comments[val].Id, comments[val].Name, comments[val].Email, comments[val].Body, time.Now().Nanosecond())
 		if err != nil {
 			log.Println(err)
 		}
