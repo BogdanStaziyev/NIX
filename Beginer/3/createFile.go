@@ -8,16 +8,17 @@ import (
 	"os"
 )
 
-func CreateFileNix(num int) {
+func CreateFile(num int) {
 	for i := 1; i <= num; i++ {
-		str := fmt.Sprintf("./storage/posts/")
-		adr := fmt.Sprintf(str+"%d.txt", i)
+		fileLocation := fmt.Sprintf("./storage/posts/")
+		createFileName := fmt.Sprintf(fileLocation+"%d.txt", i)
+		//use ConvJsonByte from goroutines package not to duplicate code
 		res := goroutines.ConvJsonToByte(i)
-		if err := os.MkdirAll(str, 0777); err != nil {
-			fmt.Println("MakeDir failed:", err)
+		if err := os.MkdirAll(fileLocation, 0777); err != nil {
+			log.Println("MakeDir failed:", err)
 			log.Fatal(err)
 		}
-		if err := ioutil.WriteFile(adr, res, 0600); err != nil {
+		if err := ioutil.WriteFile(createFileName, res, 0600); err != nil {
 			log.Fatal(err)
 		}
 	}

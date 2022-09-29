@@ -10,7 +10,7 @@ import (
 	"sync"
 )
 
-func GoRoutines(num int) {
+func CreateGoRoutines(num int) {
 	var wg sync.WaitGroup
 	wg.Add(num)
 

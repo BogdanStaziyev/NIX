@@ -6,5 +6,4 @@ type Comment struct {
 	Name   string `json:"name"`
 	Email  string `json:"email"`
 	Body   string `json:"body"`
-	Time   int    `json:"time"`
 }

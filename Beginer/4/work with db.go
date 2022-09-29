@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"nix_practice/Beginer/domain"
 	"os"
-	"time"
+	"sync"
 )
 
 func WorkWithDb(i int) {
@@ -19,25 +19,43 @@ func WorkWithDb(i int) {
 	}
 	defer db.Close()
 
-	writeToDbPosts(i, db)
-}
-
-func writeToDbPosts(i int, db *sql.DB) {
 	var posts []domain.Post
+	var wg sync.WaitGroup
 
 	r := fmt.Sprintf("https://jsonplaceholder.typicode.com/posts?userId="+"%d", i)
 	res := findResultsPosts(r, posts)
-	err := json.Unmarshal(res, &posts)
+	err = json.Unmarshal(res, &posts)
 	if err != nil {
 		log.Fatal(err)
 	}
-	for g := 0; g <= len(posts)-1; g++ {
+	for g := range posts {
+		wg.Add(1)
+		var comments []domain.Comment
+		go func() {
+			urlComments := fmt.Sprintf("https://jsonplaceholder.typicode.com/comments?postId="+"%d", posts[g].Id)
+			sliceByteComments := findResultsComments(urlComments, comments)
+			err = json.Unmarshal(sliceByteComments, &comments)
+			if err != nil {
+				log.Fatal(err)
+			}
+			go func() {
+				for val := range comments {
+					_, err = db.Query("INSERT INTO comments (post_id, id, name, email, body) VALUES (?,?,?,?,?)", comments[val].PostId, comments[val].Id, comments[val].Name, comments[val].Email, comments[val].Body)
+					log.Println(comments[val].Id)
+					if err != nil {
+						log.Println(err)
+					}
+				}
+				wg.Done()
+			}()
+		}()
+
 		_, err = db.Query("INSERT INTO posts (user_id, id, title, body) VALUES (?,?,?,?)", posts[g].UserId, posts[g].Id, posts[g].Title, posts[g].Body)
 		if err != nil {
 			log.Println(err)
 		}
-		writeToDbComments(posts[g].Id, db)
 	}
+	wg.Wait()
 }
 
 func findResultsPosts(url string, posts []domain.Post) []byte {
@@ -57,23 +75,6 @@ func findResultsPosts(url string, posts []domain.Post) []byte {
 		os.Exit(1)
 	}
 	return out
-}
-
-func writeToDbComments(i int, db *sql.DB) {
-	var comments []domain.Comment
-
-	r := fmt.Sprintf("https://jsonplaceholder.typicode.com/comments?postId="+"%d", i)
-	res := findResultsComments(r, comments)
-	err := json.Unmarshal(res, &comments)
-	if err != nil {
-		log.Fatal(err)
-	}
-	for val := 0; val < len(comments); val++ {
-		_, err = db.Query("INSERT INTO comments (post_id, id, name, email, body, time) VALUES (?,?,?,?,?,?)", comments[val].PostId, comments[val].Id, comments[val].Name, comments[val].Email, comments[val].Body, time.Now().Nanosecond())
-		if err != nil {
-			log.Println(err)
-		}
-	}
 }
 
 func findResultsComments(url string, comments []domain.Comment) []byte {

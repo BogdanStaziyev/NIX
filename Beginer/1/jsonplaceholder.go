@@ -8,6 +8,7 @@ import (
 	"os"
 )
 
+// JsonPlaceholder func return list of all posts
 func JsonPlaceholder() []byte {
 	var jsonRes *[]domain.Post
 
