@@ -10,7 +10,7 @@ import (
 
 func CreateFile(num int) {
 	for i := 1; i <= num; i++ {
-		fileLocation := fmt.Sprintf("./storage/posts/")
+		fileLocation := "./storage/posts/"
 		createFileName := fmt.Sprintf(fileLocation+"%d.txt", i)
 		//use ConvJsonByte from goroutines package not to duplicate code
 		res := goroutines.ConvJsonToByte(i)
