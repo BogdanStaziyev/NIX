@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 	"log"
-	"nix_practice/Beginer/1"
-	"nix_practice/Beginer/2"
-	"nix_practice/Beginer/3"
-	"nix_practice/Beginer/4"
+	placeholder "nix_practice/Beginer/1"
+	goroutines "nix_practice/Beginer/2"
+	file "nix_practice/Beginer/3"
+	workDb "nix_practice/Beginer/4"
+	"nix_practice/Trainee"
 )
 
 func main() {
@@ -26,4 +27,5 @@ func main() {
 	file.CreateFile(numFiles)
 
 	workDb.WorkWithDb(5)
+	Trainee.WorkWithDbGorm(6)
 }
